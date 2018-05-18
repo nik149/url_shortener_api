@@ -1,33 +1,43 @@
-const shortenURL = (req, res) => {
+const shortenURLRoute = (req, res) => {
   console.log(req.body);
+  let longURL = req.body.long_url;
 
-  console.log("Sending Response");
+  let urlDetails = shortenURL(longURL);
+
   res.send(JSON.stringify({
     flag: 101,
-    message: "Success"
+    message: "Success",
+    url_details: urlDetails
   }));
 }
 
+function shortenURL(long_url) {
+  let ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+  let BASE = ALPHABET.length;
 
-public class UrlShortener {
-    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private static final int    BASE     = ALPHABET.length();
+  let urlDetails = {};
 
-    public static String encode(int num) {
-        StringBuilder sb = new StringBuilder();
-        while ( num > 0 ) {
-            sb.append( ALPHABET.charAt( num % BASE ) );
-            num /= BASE;
-        }
-        return sb.reverse().toString();
-    }
+  urlDetails.short_url = encode(1, ALPHABET, BASE);
+  urlDetails.long_id = decode(urlDetails.short_url, ALPHABET, BASE);
+  return urlDetails;
+}
 
-    public static int decode(String str) {
-        int num = 0;
-        for ( int i = 0; i < str.length(); i++ )
-            num = num * BASE + ALPHABET.indexOf(str.charAt(i));
-        return num;
-    }
+function encode(mysqlId, ALPHABET, BASE) {
+  let string = '';
+  let num = mysqlId;
+  while(num > 0) {
+    string += ALPHABET[num%BASE];
+    num = Math.floor(num/BASE);
+  }
+  return string.split("").reverse().join("");
+}
+
+function decode(string, ALPHABET, BASE) {
+  let num = 0;
+  for(let i = 0; i < string.length; i++) {
+    num = num*BASE + ALPHABET.indexOf(string[i]);
+  }
+  return num;
 }
 
 export default {
