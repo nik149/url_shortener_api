@@ -18,8 +18,8 @@ pool.on('connection', function (connection) {
     console.log('NUMBER OF CONNECTION IN POOL : ' + numConnectionsInPool);
 });
 pool.on('release', function (connection) {
-  console.log('Connection %d released', connection.threadId);
   numConnectionsInPool--;
+  console.log('NUMBER OF CONNECTION IN POOL : ' + numConnectionsInPool);
 });
 
 var dbHandler = (function () {

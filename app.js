@@ -16,9 +16,13 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //ROUTES
-import apiRoutes from './routes/apiRoutes.js';
+import apiRoutes from './routes/index.js';
 import validateURLList from './middlewares/requestValidations.js';
+import validateLoginRequest from './middlewares/loginValidation.js';
+import validateAccessToken from './middlewares/accessTokenValidation.js';
 
-app.post('/shorten_url', validateURLList, apiRoutes.shortenURL);
+app.post('/login', validateLoginRequest, apiRoutes.login);
+app.post('/shorten_url', validateAccessToken, validateURLList, apiRoutes.shortenURLRoute);
+app.get('/get_user_history_data', validateAccessToken, apiRoutes.getUserData);
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))

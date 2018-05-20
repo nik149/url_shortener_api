@@ -34,7 +34,7 @@ const validateURLList = (req, res, next) => {
       url_list: urlList
     })
   }
-  console.log("inside val: ", urlList);
+
   req.body.url_list = urlList;
   next();
 }

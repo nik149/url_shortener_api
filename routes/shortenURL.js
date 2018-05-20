@@ -4,9 +4,11 @@ import { CHAR_MAP, BASE } from '../constants/urlConstants.js';
 
 const shortenURLRoute = (req, res) => {
   let urlList = req.body.url_list;
+  let userId = req.body.user.user_id;
+
   let promises = [];
   urlList.forEach((urlObject) => {
-    promises.push(shortenURL(urlObject));
+    promises.push(shortenURL(urlObject, userId));
   });
 
   Promise.all(promises)
@@ -29,10 +31,9 @@ const shortenURLRoute = (req, res) => {
   });
 }
 
-
-function shortenURL(urlObject) {
+function shortenURL(urlObject, userId) {
   return new Promise((resolve, reject) => {
-    dbHandler.query('INSERT INTO tb_url_mappings(long_url, user_id, num_hits) VALUES(?, ?, ?)', [urlObject.long_url, 1, 0], function(err, result) {
+    dbHandler.query('INSERT INTO tb_url_mappings(long_url, user_id, num_hits) VALUES(?, ?, ?)', [urlObject.long_url, userId, 0], function(err, result) {
       if(err) {
         reject(err);
       } else {
@@ -56,14 +57,4 @@ function encode(mysqlId) {
   return string.split("").reverse().join("");
 }
 
-function decode(string) {
-  let num = 0;
-  for(let i = 0; i < string.length; i++) {
-    num = num*BASE + CHAR_MAP.indexOf(string[i]);
-  }
-  return num;
-}
-
-export default {
-  shortenURL: shortenURLRoute
-};
+export default shortenURLRoute;
