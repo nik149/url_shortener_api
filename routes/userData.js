@@ -63,7 +63,7 @@ function getHistoryData(userId, page, size) {
         reject(err);
       } else {
         result.forEach(function(row) {
-          row.short_url = encode(row.id);
+          row.short_url = process.env.BASE_URL + encode(row.id);
         })
         resolve(result);
       }
