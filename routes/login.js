@@ -11,7 +11,6 @@ const login = (req, res) => {
   let userImage = userInfo.profile.image || '';
 
   dbHandler.query("SELECT * FROM tb_users WHERE google_user_id = ?", [googleUserId], function(err, result) {
-    console.log(err, result);
     if(err) {
       res.status(500);
       return res.send({
@@ -41,7 +40,7 @@ const login = (req, res) => {
         });
       } else {
         let user = result[0];
-        updateUserInfo(googleUserId, userName, userEmail, userImage, accessToken)
+        updateUserInfo(user.id, userName, userEmail, userImage, accessToken)
         .then(result => {
           res.status(200);
           return res.send({
@@ -76,9 +75,9 @@ function createUser(googleUserId, userName, userEmail, userImage, accessToken) {
   });
 }
 
-function updateUserInfo(googleUserId, userName, userEmail, userImage, accessToken) {
+function updateUserInfo(userId, userName, userEmail, userImage, accessToken) {
   return new Promise((resolve, reject) => {
-    dbHandler.query('UPDATE tb_users SET user_name=?, user_email=?, user_image=?, access_token=? WHERE google_user_id = ?', [userName, userEmail, userImage, accessToken, googleUserId], function(err, result) {
+    dbHandler.query('UPDATE tb_users SET user_name=?, user_email=?, user_image=?, access_token=? WHERE id = ?', [userName, userEmail, userImage, accessToken, userId], function(err, result) {
       if(err) {
         reject(err);
       } else {
