@@ -8,9 +8,9 @@ const validateLoginRequest = (req, res, next) => {
   try {
     userInfo = JSON.parse(req.body.user_info);
   } catch(e) {
-    res.status(404);
+    res.status(400);
     return res.send({
-      statusCode: 404,
+      statusCode: 400,
       flag: responseFlags.REQUEST_NOT_PARSED,
       message: 'Bad Request'
     });

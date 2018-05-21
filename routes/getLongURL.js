@@ -5,17 +5,7 @@ var url = require('url');
 
 const getLongURL = (req, res) => {
   let userId = req.body.user.user_id;
-  let shortUrls;
-  try {
-    shortUrls = JSON.parse(req.body.short_urls);
-  } catch(e) {
-    res.status(400);
-    return res.send({
-      statusCode: 400,
-      flag: responseFlags.REQUEST_NOT_PARSED,
-      message: 'Bad Request'
-    });
-  }
+  let shortUrls = req.body.short_urls;
 
   let urlIds = [];
   shortUrls.forEach(function(shortUrl) {
@@ -31,7 +21,8 @@ const getLongURL = (req, res) => {
       return {
         long_url: row.long_url,
         created_on: row.created_on,
-        short_url: encode(row.id)
+        short_url: encode(row.id),
+        hits: row.num_hits
       }
     });
 

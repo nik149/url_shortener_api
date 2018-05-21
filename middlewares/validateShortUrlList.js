@@ -1,8 +1,8 @@
 import responseFlags from '../constants/responseFlags.js';
 
-const validateURLList = (req, res, next) => {
+const validateShortUrlList = (req, res, next) => {
   try {
-    var urlList = JSON.parse(req.body.url_list);
+    var urlList = JSON.parse(req.body.short_urls);
   } catch(e) {
     res.status(400);
     return res.send({
@@ -16,8 +16,8 @@ const validateURLList = (req, res, next) => {
 
   urlList = urlList.map((urlObject) => {
     let newurlObject =  {
-      long_url: urlObject.value,
-      isValid: isValidURL(urlObject.value),
+      url: urlObject.url,
+      isValid: isValidURL(urlObject.url),
       key: urlObject.key
     }
     if(!newurlObject.isValid) {
@@ -31,11 +31,11 @@ const validateURLList = (req, res, next) => {
     return res.send({
       statusCode: 400,
       flag: responseFlags.CONTAINS_INVALID_URLs,
-      url_list: urlList
+      short_urls: urlList
     })
   }
 
-  req.body.url_list = urlList;
+  req.body.short_urls = urlList;
   next();
 }
 
@@ -44,4 +44,4 @@ function isValidURL(string) {
   return regex.test(string);
 }
 
-export default validateURLList;
+export default validateShortUrlList;
