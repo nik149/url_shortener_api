@@ -57,7 +57,7 @@ function getTotalPages(userId) {
 
 function getHistoryData(userId, page, size) {
   return new Promise((resolve, reject) => {
-    dbHandler.query('SELECT id, long_url, created, num_hits FROM tb_url_mappings WHERE user_id = ? ORDER BY id DESC LIMIT ?,?', [userId, parseInt(page)*size, (parseInt(page)+1)*size], function(err, result) {
+    dbHandler.query('SELECT id, long_url, created, num_hits FROM tb_url_mappings WHERE user_id = ? ORDER BY id DESC LIMIT ?, ?', [userId, parseInt(page)*size, parseInt(size)], function(err, result) {
       if(err) {
         reject(err);
       } else {
