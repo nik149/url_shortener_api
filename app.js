@@ -24,5 +24,14 @@ import validateAccessToken from './middlewares/accessTokenValidation.js';
 app.post('/login', validateLoginRequest, apiRoutes.login);
 app.post('/shorten_url', validateAccessToken, validateURLList, apiRoutes.shortenURLRoute);
 app.get('/get_user_history_data', validateAccessToken, apiRoutes.getUserData);
+app.post('/get_long_url', validateAccessToken, apiRoutes.getLongURL);
+
+app.get('*', function(req, res){
+  res.status(404).send('404 Not Found');
+});
+
+app.post('*', function(req, res){
+  res.status(404).send('404 Not Found');
+});
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))

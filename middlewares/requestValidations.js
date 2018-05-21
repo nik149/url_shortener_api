@@ -4,9 +4,9 @@ const validateURLList = (req, res, next) => {
   try {
     var urlList = JSON.parse(req.body.url_list);
   } catch(e) {
-    res.status(404);
+    res.status(400);
     return res.send({
-      statusCode: 404,
+      statusCode: 400,
       flag: responseFlags.REQUEST_NOT_PARSED,
       message: 'Bad Request'
     });
