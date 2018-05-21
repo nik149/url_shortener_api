@@ -10,10 +10,24 @@ const getLongURL = (req, res) => {
   let urlIds = [];
   shortUrls.forEach(function(shortUrl) {
     let code = url.parse(shortUrl.url, true).pathname;
-    let surl = code.substr(1);
-    let urlId = decode(surl);
-    urlIds.push(urlId);
+    let host = url.parse(shortUrl.url, true).host;
+    let redirectorHost = url.parse(process.env.BASE_URL, true).host;
+    if(host == redirectorHost) {
+      let surl = code.substr(1);
+      let urlId = decode(surl);
+      urlIds.push(urlId);
+    }
   });
+
+  if(!urlIds.length) {
+    res.status(200);
+    return res.send({
+      statusCode: 200,
+      flag: responseFlags.SUCCESS,
+      data: [],
+      message: 'Success'
+    });
+  }
 
   fetchAllLongUrls(urlIds, userId)
   .then(result => {
