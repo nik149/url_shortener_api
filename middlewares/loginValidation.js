@@ -35,11 +35,11 @@ const validateLoginRequest = (req, res, next) => {
     req.body.user_info = userInfo;
     next();
   }).catch(error => {
-    res.status(500);
+    res.status(403);
     return res.send({
-      statusCode: 500,
-      flag: responseFlags.QUERY_ERROR,
-      message: 'Something went wrong. Please try again later.'
+      statusCode: 403,
+      flag: responseFlags.FAILED,
+      message: 'Login Failed'
     });
   });
 }
